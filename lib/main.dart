@@ -1,3 +1,5 @@
+import 'package:app_ferreteria/screens/login_screen.dart';
+import 'package:app_ferreteria/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:app_ferreteria/screens/screens.dart';
@@ -13,15 +15,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false, // Indica que está activo el Banner (Se ve feo)
-      title: 'Proyecto: Ferretería Maqximo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      //home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      home: const ReadExistenceScreen()
-    );
+        debugShowCheckedModeBanner:
+            false, // Indica que está activo el Banner (Se ve feo)
+        title: 'Proyecto: Ferretería Maqximo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        //home: const MyHomePage(title: 'Flutter Demo Home Page'),
+        home: const RegisterScreen()
+        //const ReadExistenceScreen()
+        );
   }
 }
 
@@ -71,7 +75,6 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
-
     );
   }
 }
