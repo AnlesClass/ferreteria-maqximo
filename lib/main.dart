@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:app_ferreteria/screens/login_screen.dart';
 import 'package:app_ferreteria/screens/register_screen.dart';
 import 'package:app_ferreteria/services/user_service.dart';
+import 'package:app_ferreteria/view_models/login_view_model.dart';
 import 'package:app_ferreteria/view_models/register_view_model.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +17,10 @@ void main() {
       providers: [
         Provider(create: (_) => UserService("http://localhost:3000")),
         ChangeNotifierProvider(
-            create: (context) => RegisterViewModel(context.read<UserService>()))
+            create: (context) =>
+                RegisterViewModel(context.read<UserService>())),
+        ChangeNotifierProvider(
+            create: (context) => LoginViewModel(context.read<UserService>())),
       ],
       child: const MyApp(),
     ),
@@ -36,7 +42,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         //home: const MyHomePage(title: 'Flutter Demo Home Page'),
-        home: const LoginScreen()
+        home: RegisterScreen()
         //const ReadExistenceScreen()
         );
   }

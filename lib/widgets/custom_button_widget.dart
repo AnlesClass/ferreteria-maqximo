@@ -5,12 +5,14 @@ class CustomButtonWidget extends StatelessWidget {
   final Color backgroundColor;
   final Color foregroundColor;
   final Color borderColor;
+  final Text? contenido;
   const CustomButtonWidget(
       {super.key,
       required this.onPressed,
       required this.backgroundColor,
       required this.foregroundColor,
-      required this.borderColor});
+      required this.borderColor,
+      this.contenido});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class CustomButtonWidget extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
       ),
       onPressed: onPressed,
-      child: const Text("Registrar Usuario"),
+      child: contenido ?? const Text("Registrar Usuario"),
     );
   }
 }

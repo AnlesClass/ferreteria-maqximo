@@ -4,7 +4,6 @@ import '../view_models/register_view_model.dart';
 import '../widgets/custom_button_widget.dart';
 import '../widgets/custom_text_form_field_login_register.dart';
 import '../widgets/custom_drop_down_button_widget.dart';
-import '../themes/classic_theme.dart';
 
 class RegisterScreen extends StatelessWidget {
   RegisterScreen({super.key});
@@ -14,7 +13,7 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Accede al ViewModel usando Provider
-    final viewModel = Provider.of<RegisterViewModel>(context);
+    final registerViewModel = Provider.of<RegisterViewModel>(context);
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(206, 255, 162, 0),
@@ -73,10 +72,10 @@ class RegisterScreen extends StatelessWidget {
                         backgroundColor: const Color(0x46FFFFFF),
                         borderColor: Colors.transparent,
                         sizeBorder: 0,
-                        initValue: viewModel.selectedCargo,
-                        itemsList: viewModel.cargoOptions,
+                        initValue: registerViewModel.selectedCargo,
+                        itemsList: registerViewModel.cargoOptions,
                         onChange: (value) {
-                          viewModel.selectedCargo = value.toString();
+                          registerViewModel.selectedCargo = value.toString();
                         },
                       ),
                     ),
@@ -90,10 +89,10 @@ class RegisterScreen extends StatelessWidget {
                         backgroundColor: const Color(0x46FFFFFF),
                         borderColor: Colors.transparent,
                         sizeBorder: 0,
-                        initValue: viewModel.selectedSede,
-                        itemsList: viewModel.sedeOptions,
+                        initValue: registerViewModel.selectedSede,
+                        itemsList: registerViewModel.sedeOptions,
                         onChange: (value) {
-                          viewModel.selectedSede = value.toString();
+                          registerViewModel.selectedSede = value.toString();
                         },
                       ),
                     ),
@@ -104,10 +103,11 @@ class RegisterScreen extends StatelessWidget {
                         children: [
                           Expanded(
                             flex: 1,
+                            //Campo nombre
                             child: CustomTextFormFieldLoginRegister(
-                              controller: viewModel.nombreController,
-                              validator: (value) =>
-                                  viewModel.validarNombre(value ?? ""),
+                              controller: registerViewModel.nombreController,
+                              validator: (value) => registerViewModel
+                                  .validarTexto(value ?? "", "nombre"),
                               labelText: "Nombre",
                               hintText: "Ingresar Nombre",
                             ),
@@ -115,10 +115,11 @@ class RegisterScreen extends StatelessWidget {
                           const SizedBox(width: 15),
                           Expanded(
                             flex: 1,
+                            //Campo apellido
                             child: CustomTextFormFieldLoginRegister(
-                              controller: viewModel.apellidoController,
-                              validator: (value) =>
-                                  viewModel.validarApellido(value ?? ""),
+                              controller: registerViewModel.apellidoController,
+                              validator: (value) => registerViewModel
+                                  .validarTexto(value ?? "", "apellido"),
                               labelText: "Apellido",
                               hintText: "Ingresar Apellido",
                             ),
@@ -129,33 +130,35 @@ class RegisterScreen extends StatelessWidget {
                     const SizedBox(height: 15),
                     // Campo Email
                     CustomTextFormFieldLoginRegister(
-                      controller: viewModel.emailController,
+                      controller: registerViewModel.emailController,
                       labelText: "Usuario",
                       hintText: "Correo de usuario",
-                      validator: (value) => viewModel.validarEmail(value ?? ""),
+                      validator: (value) =>
+                          registerViewModel.validarEmail(value ?? ""),
                     ),
                     const SizedBox(height: 15),
                     // Campo Contraseña
                     CustomTextFormFieldLoginRegister(
-                      controller: viewModel.contraseniaController,
+                      controller: registerViewModel.contraseniaController,
                       labelText: "Contraseña",
                       hintText: "Contraseña",
-                      obscureText: viewModel.estado,
+                      obscureText: registerViewModel.estado,
                       iconButton: IconButton(
-                        icon: Icon(viewModel.estado
+                        icon: Icon(registerViewModel.estado
                             ? Icons.visibility
                             : Icons.visibility_off),
-                        onPressed: viewModel.togglePasswordVisibility,
+                        onPressed: registerViewModel.togglePasswordVisibility,
                       ),
                       validator: (value) =>
-                          viewModel.validarContrasenia(value ?? ""),
+                          registerViewModel.validarContrasenia(value ?? ""),
                     ),
                     const SizedBox(height: 30),
                     // Botón de Registro
                     CustomButtonWidget(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
-                          final success = await viewModel.registerUser();
+                          final success =
+                              await registerViewModel.registerUser();
                           final message = success
                               ? "Registro exitoso"
                               : "Error en el registro";
