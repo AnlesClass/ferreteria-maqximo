@@ -31,16 +31,18 @@ class CustomTextFormFieldLoginRegister extends StatelessWidget {
         autofocus: autofocus ?? false,
         decoration: InputDecoration(
             labelText: labelText,
-            labelStyle: const TextStyle(color: Colors.black),
             hintText: hintText,
+            labelStyle: const TextStyle(color: Colors.black),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
+                borderRadius: BorderRadius.circular(10),
+                borderSide: const BorderSide(color: Colors.transparent)),
             focusedBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black),
+              borderSide: BorderSide(color: Colors.transparent),
             ),
+            enabledBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.transparent)),
             filled: true,
-            fillColor: const Color(0xFFFFFFFF),
+            fillColor: const Color(0x46FFFFFF),
             suffixIcon: iconButton),
         validator: validator,
         obscureText: obscureText ?? false,
