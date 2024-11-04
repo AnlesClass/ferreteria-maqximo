@@ -1,15 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
-import 'package:app_ferreteria/themes/themes.dart';
-
 import 'package:app_ferreteria/widgets/widgets.dart';
+import 'package:http/http.dart' as http;
 
-class ReadExistenceScreen extends StatelessWidget {
+class ReadExistenceScreen extends StatefulWidget {
    
   const ReadExistenceScreen({super.key});
-  
 
-  //TODO: Cambiar por una consulta Json real.
   static Map<int, dynamic> categorias ={
     0 : {
       "value" : "Value01", // Consulta : Nombre Categoria.
@@ -19,20 +18,50 @@ class ReadExistenceScreen extends StatelessWidget {
       "value" : "Value02",
       "message" : "Por Stock"
     }
-  };   
+  };
 
+  @override
+  State<ReadExistenceScreen> createState() => _ReadExistenceScreenState();
+}
+
+class _ReadExistenceScreenState extends State<ReadExistenceScreen> {
+  
+  List<dynamic> existences = [];
+
+  Future<void> getExistences(int idSede) async {
+    final url = Uri.parse('http://localhost:3000/existencias/get/all?idSede=$idSede'); // CAMBIAR.
+
+    try {
+      final response = await http.get(url);
+      
+      // SI la solicitud sale bien.
+      if (response.statusCode == 200){
+        setState(() {
+          existences = jsonDecode(response.body);
+        });
+      }
+    } catch (e) {
+      //TODO: Salta un dialogo de error y devuelve a la anterior página.
+      existences = [];
+      print('Error al hacer la solicitud "getExistences" => $e');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getExistences(1);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
         title: const Icon(
           Icons.bolt_rounded,
           color: Colors.white,
           size: 30,
         ),
-        backgroundColor: ClassicTheme.primary,
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,7 +85,7 @@ class ReadExistenceScreen extends StatelessWidget {
                   initValue: "Value01",
                   itemsList: [
                     // TODO: Documentar con exactitud esto.
-                    ...categorias.entries.map(
+                    ...ReadExistenceScreen.categorias.entries.map(
                       (e) {
                         return DropdownMenuItem<String>(
                           value: e.value["value"], // Value01  
@@ -95,47 +124,21 @@ class ReadExistenceScreen extends StatelessWidget {
               ],
             ),
           ),
-          const Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 3.5),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Test-Top",
-                                    textAlign: TextAlign.start,
-                                  ),
-                                  Text(
-                                    "Test-Bottom",
-                                    textAlign: TextAlign.start,
-                                  ),
-                                ],
-                              )
-                            ),
-                            Expanded(
-                              child: Text(
-                                "Test-Right",
-                                textAlign: TextAlign.end,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Divider(
-                          color: Colors.black54,
-                        ),
-                      ],
-                    ),
+          Expanded(
+            child: ListView(
+              children: existences.map((existence){
+                return ListTile(
+                  title: Text(existence["NOMBRE"]),
+                  subtitle: Flex(
+                    direction: Axis.horizontal,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(existence["FECHA_REGISTRO"]),
+                      Text(existence["PRECIO"].toString())
+                    ],
                   ),
-                ],
-              ),
+                );
+              }).toList(),
             ),
           ),
         ],

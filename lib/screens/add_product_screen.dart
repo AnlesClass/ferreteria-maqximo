@@ -103,7 +103,7 @@ class AddProductScreen extends StatelessWidget {
                                 TextButton(
                                   style: const ButtonStyle(
                                     // El Overlay pinta cuando posiciono el mouse sobre esto.
-                                    overlayColor: MaterialStatePropertyAll(Colors.transparent)
+                                    overlayColor: WidgetStatePropertyAll(Colors.transparent)
                                   ),
                                   onPressed: () {
                                     // Función para subir imagen.
@@ -206,7 +206,7 @@ class AddProductScreen extends StatelessWidget {
                                 children: [
                                   FilledButton(
                                     style: const ButtonStyle(
-                                      backgroundColor: MaterialStatePropertyAll(ClassicTheme.primary)
+                                      backgroundColor: WidgetStatePropertyAll(ClassicTheme.primary)
                                     ),
                                     onPressed: () => {},
                                     child: const Text("Guardar"),
@@ -216,7 +216,7 @@ class AddProductScreen extends StatelessWidget {
                                   ),
                                   FilledButton(
                                     style: const ButtonStyle(
-                                      backgroundColor: MaterialStatePropertyAll(ClassicTheme.primary)
+                                      backgroundColor: WidgetStatePropertyAll(ClassicTheme.primary)
                                     ),
                                     onPressed: () => {},
                                     child: const Text("Cancelar")
