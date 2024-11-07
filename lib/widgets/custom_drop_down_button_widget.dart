@@ -7,28 +7,22 @@ class CustomDropDownButton extends StatefulWidget {
   final Color? borderColor;
   final double? sizeBorder;
   final void Function(dynamic)? onChange;
-  const CustomDropDownButton(
-      {super.key,
-      required this.initValue,
-      required this.itemsList,
-      this.backgroundColor,
-      this.borderColor,
-      this.sizeBorder,
-      this.onChange});
+
+  const CustomDropDownButton({
+    super.key,
+    required this.initValue,
+    required this.itemsList,
+    this.backgroundColor,
+    this.borderColor,
+    this.sizeBorder,
+    this.onChange
+  });
 
   @override
   State<CustomDropDownButton> createState() => _CustomDropDownButtonState();
 }
 
 class _CustomDropDownButtonState extends State<CustomDropDownButton> {
-  String? currentValue;
-
-  @override
-  void initState() {
-    super.initState();
-    currentValue = widget.initValue;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -46,20 +40,11 @@ class _CustomDropDownButtonState extends State<CustomDropDownButton> {
         borderRadius: const BorderRadius.all(Radius.circular(5)),
         elevation: 2,
         isExpanded: true,
-        underline:
-            const SizedBox(), //BORRANDO: La (molesta) línea bajo el desplegable.
-        value: currentValue,
+        underline: const SizedBox(), //BORRANDO: La (molesta) línea bajo el desplegable.
+        value: widget.initValue,
         items: widget.itemsList,
         focusColor: widget.backgroundColor ?? Colors.transparent,
-        onChanged: (value) {
-          setState(() {
-            currentValue = value;
-          });
-          if (widget.onChange != null) {
-            widget
-                .onChange!(value); // Llama a la función onChange si no es nula.
-          }
-        },
+        onChanged: widget.onChange
       ),
     );
   }

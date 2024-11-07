@@ -12,12 +12,31 @@ class ClassicTheme{
       elevation: 2,
     ),
 
-    //ESTILO: 
+    //ESTILO: Elevated Button
     elevatedButtonTheme: const ElevatedButtonThemeData(
       style: ButtonStyle(
         backgroundColor: WidgetStatePropertyAll(primary),
         foregroundColor: WidgetStatePropertyAll(Colors.white)
       ),
+    ),
+
+    //ESTILO: Filled Button
+    filledButtonTheme: const FilledButtonThemeData(
+      style: ButtonStyle(
+        backgroundColor: WidgetStatePropertyAll(primary)
+      )
+    ),
+
+    //ESTILO: CheckBox
+    checkboxTheme: CheckboxThemeData(
+      fillColor: WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
+        if (states.contains(WidgetState.selected)) {
+          return primary;
+        }
+          return Colors.black45;
+      }),
+      overlayColor: const WidgetStatePropertyAll(Color(0x50ffaf00)),
+      shape: const CircleBorder()
     )
   );
 }

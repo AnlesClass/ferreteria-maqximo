@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:app_ferreteria/view_models/read_existence_view_model.dart';
 import 'package:flutter/material.dart';
 
 import 'package:app_ferreteria/widgets/widgets.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class ReadExistenceScreen extends StatefulWidget {
    
@@ -55,6 +57,9 @@ class _ReadExistenceScreenState extends State<ReadExistenceScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    final readExistenceViewmodel = Provider.of<ReadExistenceViewModel>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Icon(
@@ -110,7 +115,8 @@ class _ReadExistenceScreenState extends State<ReadExistenceScreen> {
                 const SizedBox(
                   height: 15,
                 ),
-                const CustomTextField(
+                CustomTextField(
+                  controller: readExistenceViewmodel.nombreExistencia,
                   hintText: "Buscar la Existencia...",
                   labelText: "Búsqueda",
                   icon: Icons.manage_search_rounded,

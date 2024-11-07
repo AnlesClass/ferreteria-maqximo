@@ -1,26 +1,37 @@
+import 'dart:io';
+import 'package:app_ferreteria/models/producto.dart';
 import 'package:flutter/material.dart';
 
+import 'package:app_ferreteria/view_models/add_product_view_model.dart';
 import 'package:app_ferreteria/themes/themes.dart';
 import 'package:app_ferreteria/widgets/widgets.dart';
 
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+
 class AddProductScreen extends StatelessWidget {
-   
-  const AddProductScreen({super.key});
-  
-  //TODO: Cambiar por una consulta Json real.
-  static Map<int, dynamic> categorias ={
-    0 : {
-      "value" : "Value01", // Consulta : Nombre Categoria.
-      "message" : "Value01" // Consulta : Nombre Categoria.
-    },
-    1 : {
-      "value" : "Value02",
-      "message" : "Value02"
+
+  File? imageProduct;
+
+  AddProductScreen({super.key});
+
+  //SELECCIONAR imagen de galería y guardarlo en una variable (File)
+  Future<void> pickImage() async {
+    final picker = ImagePicker();
+    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedImage != null) {
+      imageProduct = File(pickedImage.path);
     }
-  };   
+  }
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+
+    final addProductViewmodel = Provider.of<AddProductViewModel>(context);
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -39,14 +50,14 @@ class AddProductScreen extends StatelessWidget {
           children: [
             // CONTENER: Imagen del Logo - (IngCo)
             Container(
-              color: ClassicTheme.primary, // TODO : Color Test
+              color: ClassicTheme.primary,
               width: double.maxFinite,
               height: 200, // TODO: Corregir esto
               child: Image.asset("assets/images/logo_maqximo.jpeg"),
             ),
             // CONTENER: Formulario para Registro del Producto.
             Container(
-              color: ClassicTheme.primary, // TODO : Color Test
+              color: ClassicTheme.primary,
               width: double.infinity,
               child: Card(
                 // REDONDEAR: Los vértices superiores de la card.
@@ -59,6 +70,7 @@ class AddProductScreen extends StatelessWidget {
                 ),
                 margin: EdgeInsets.zero,
                 child: Form(
+                  key: _formKey,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: Column(
@@ -105,9 +117,7 @@ class AddProductScreen extends StatelessWidget {
                                     // El Overlay pinta cuando posiciono el mouse sobre esto.
                                     overlayColor: WidgetStatePropertyAll(Colors.transparent)
                                   ),
-                                  onPressed: () {
-                                    // Función para subir imagen.
-                                  },
+                                  onPressed: () => pickImage(),
                                   child: Padding(
                                     padding: const EdgeInsets.all(20),
                                     child: Image.asset(
@@ -133,55 +143,30 @@ class AddProductScreen extends StatelessWidget {
                           margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
                           child: Column(
                             children: [
-                              // 1. Buscar Coincidencias de Nombre
-                              const CustomTextField(
-                                 labelText: "Nombre del Producto",
-                                 hintText: "Comprobar Nombre...",
-                                 icon: Icons.search_rounded,
+                              // 1. Asignar Nombre
+                              CustomTextField(
+                                controller: addProductViewmodel.nombreProducto,
+                                labelText: "Nombre del Producto",
+                                hintText: "Nombre...",
+                                icon: Icons.search_rounded,
+                                validator: (value) => addProductViewmodel.validarTexto(value!, "Nombre", minLength: 3, maxLength: 32)
                               ),
-                              // 2. Categoría
+                              // 2. Asignar Categoría
                               Row(
                                 children: [
                                   Expanded(
                                     flex: 6,
                                     child: CustomDropDownButton(
-                                      initValue: "Value01", //TODO: Cargar 
-                                      itemsList: [
-                                        // TODO: Diseñar construcción eficiente.
-                                        // IDEA: Traer con una consulta Valores y Textos de Categoría y construirlos.
-
-                                        // TODO: Documentar con exactitud esto. (01)
-                                        ...categorias.entries.map(
-                                          (e) {
-                                            return DropdownMenuItem<String>(
-                                              value: e.value["value"], // Value01  
-                                              child: Padding(
-                                                padding: const EdgeInsets.symmetric(horizontal: 10),
-                                                child: Row(
-                                                  children: [
-                                                    // 1. Icono de la Fila.
-                                                    // iconData != null ? Icon(iconData) : const Icon(null),
-                                                    // 2. Sepración entre Widgets.
-                                                    const SizedBox(width: 10),
-                                                    // 3. Mensajge de la Fila.
-                                                    Text(e.value["message"]),
-                                                    ],
-                                                  ),
-                                              ),
-                                            );
-                                          }
-                                        ),
-
-
-                                      ],
+                                      initValue: addProductViewmodel.categoriaInitValue,
+                                      itemsList: addProductViewmodel.categoriasOptions,
+                                      onChange: (newValue) {
+                                        addProductViewmodel.setCategoriaDropdown(newValue);
+                                      },
                                     ),
                                   ),
                                   Expanded(
                                     flex: 1,
                                     child: Checkbox(
-                                      activeColor: ClassicTheme.primary,
-                                      hoverColor: const Color(0x50ffaf00),
-                                      shape: const CircleBorder(),
                                       value: true,
                                       onChanged: (value) => {},
                                     ),
@@ -192,10 +177,12 @@ class AddProductScreen extends StatelessWidget {
                               const SizedBox(
                                 height: 20,
                               ),
-                              const CustomTextField(
+                              CustomTextField(
+                                controller: addProductViewmodel.descripcionProducto,
                                 hintText: "Describa su producto...",
                                 labelText: "Descripción",
                                 lines: 4,
+                                validator: (value) => addProductViewmodel.validarTexto(value!, "Descripcion")
                               ),
                               // 4. Botones
                               const SizedBox(
@@ -205,21 +192,32 @@ class AddProductScreen extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   FilledButton(
-                                    style: const ButtonStyle(
-                                      backgroundColor: WidgetStatePropertyAll(ClassicTheme.primary)
-                                    ),
-                                    onPressed: () => {},
                                     child: const Text("Guardar"),
+                                    onPressed: () {
+                                      if (_formKey.currentState!.validate() && imageProduct != null){
+                                        //OBTENER extensión del archivo.
+                                        String extension = imageProduct!.path.split('.').last;
+                                        //CREAR producto.
+                                        Producto producto = Producto(
+                                          idCategoria: int.parse(addProductViewmodel.categoriaInitValue),
+                                          nombre: addProductViewmodel.nombreProducto.text,
+                                          descripcion: addProductViewmodel.descripcionProducto.text,
+                                          //TODO: La linea de abajo funciona en móvil, la otra '.png' es para pruebas en web.
+                                          //path_imagen: 'images/${addProductViewmodel.nombreProducto.text}.${extension}'
+                                          path_imagen: 'images/${addProductViewmodel.nombreProducto.text}.png'
+                                        );
+                                        print("DEBUG: ${producto.path_imagen}");
+                                        //TODO: Función para subir archivo al servidor con el nombre asignado (nombre del producto).
+                                        //addProductViewmodel.uploadProduct(producto, imageProduct);
+                                      }
+                                    },
                                   ),
                                   const SizedBox(
                                     width: 10,
                                   ),
                                   FilledButton(
-                                    style: const ButtonStyle(
-                                      backgroundColor: WidgetStatePropertyAll(ClassicTheme.primary)
-                                    ),
-                                    onPressed: () => {},
-                                    child: const Text("Cancelar")
+                                    child: const Text("Cancelar"),
+                                    onPressed: () => {}
                                   )
                                 ],
                               ),

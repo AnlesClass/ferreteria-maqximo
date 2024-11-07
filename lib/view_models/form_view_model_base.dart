@@ -32,10 +32,11 @@ class FormViewModelBase extends ChangeNotifier {
   }
 
 // Validar todo tipo de texto para evitar ingresos vacios
-  String? validarTexto(String value, String nombreCampo) {
-    if (value.isEmpty) {
-      return "Por favor ingrese $nombreCampo";
-    }
+  String? validarTexto(String value, String nombreCampo, {int minLength = 0, int maxLength = 256}) {
+    if (value.isEmpty) return "Por favor ingrese $nombreCampo";
+    if (value.length <= minLength) return "La longitud mínima de $nombreCampo es de $minLength caracteres.";
+    if (value.length > maxLength) return "La longitud máxima de $nombreCampo es de $maxLength caracteres.";
+
     return null;
   }
 }
