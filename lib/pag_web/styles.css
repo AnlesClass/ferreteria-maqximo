@@ -1,0 +1,225 @@
+/*API: Para traer una fuente llamada Lato.*/
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+
+header,main,aside{
+    border-radius:  10px;
+    padding: 10px;
+}
+
+body{
+    background-color: rgba(102, 102, 102, 0.352);
+    min-height: 100vh;
+    padding: 10px;
+    gap: 10px;
+    margin: 0;
+    display: grid;
+    grid-template-columns:240px 1fr 1fr;
+    grid-template-rows: 80px 150px 1fr 1fr;
+    grid-template-areas: "encabezado encabezado encabezado"
+                         "anuncio    anuncio    anuncio"
+                         "busqueda   contenido  contenido"
+                         "busqueda   contenido  contenido";
+}
+/* ENCABEZADO */
+header{
+    display: flex;
+    flex-flow: row wrap;
+    align-content: center;    
+    background-color: #F6A019;
+    grid-area: encabezado;
+
+}  
+    img,form{
+        flex: 1;
+        text-align: center;
+    }
+    form{
+        flex: 7;
+        padding: 0px 30px 0px 0px;
+        gap: 10px;
+        display: flex;
+        flex-flow: wrap row;
+        align-items: center;
+        justify-content: end;
+    }
+        button,label,input{
+            flex-grow: 1;
+            place-content: center;
+            border:0;
+            border-radius: 10px;
+            width: 35%;
+            height: 50%;
+            transition-duration: 200ms;
+        }
+        label{
+            text-align: end;
+            font-size: 15px;
+            font-weight: bold;
+        }
+        button{
+            background-color: rgba(207, 207, 88, 0.237);
+            width: 0px;
+
+        }
+        button:active{
+            scale: 0.95;
+            background-color: rgba(207, 207, 88, 0.547);
+        }
+
+
+/* ANUNCIOS */
+section {
+    grid-area: anuncio;
+    background-color: rgb(175, 171, 50);
+    position: relative;
+    overflow: hidden;
+}
+
+ul {
+    display: flex;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: max-content;
+    animation: deslizar 20s linear infinite;
+}
+
+li {
+    flex-grow: 1;
+    flex-shrink: 0;
+    width: 300px;
+}
+
+li > img {
+    object-fit: fill;
+}
+
+ul:hover {
+    animation-play-state: paused;
+}
+
+@keyframes deslizar {
+    0% {
+        transform: translateX(0); /* Comienza desde la posición inicial */
+    }
+    100% {
+        transform: translateX(-50%); /* Mueve la mitad del contenido duplicado */
+    }
+}
+
+
+/* CONTENIDO (productos) */
+
+main{
+    background-color: rgba(255 255 255 / 0.781);
+    grid-area: contenido;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+    .product-card{
+        background-color: #ebe6da;
+        display: grid;
+        grid-template-rows: 200px 30px 200px 30px;
+        flex-flow: column;
+        font-family: 'Lato';
+        padding: 10px;
+        height: max-content;
+        transition-duration: 200ms;
+        box-sizing: content-box;
+    }
+        img{
+            border-radius: 5px;
+            width: 100%;
+            height: 100%;
+            flex-grow: 1;
+            object-fit: cover;
+        }
+        .product-titulo{
+            text-align: center;
+            font-weight: bold;
+        }
+        .product-descripcion{
+            text-align: center;
+            height: 70px;
+        }
+
+        .product-precio-cantidad{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .product-card:hover{
+            scale: 1.05;
+            background-color: rgb(215, 207, 188);
+            outline: 1px solid rgb(133, 128, 118);
+            border-radius: 9px;
+        }
+
+
+
+/* Barra de busqueda */
+aside{
+    background-color: #F6A019;
+    grid-area: busqueda;
+}
+
+#busquedaAvanzada{
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0;
+    gap: 25px;
+}
+
+#busquedaAvanzada > label {
+    text-align: start;
+    font-size: 20px  ;
+}
+
+#busquedaAvanzada > input{
+    width: 95%;
+    height: 20px;
+}
+
+#busquedaAvanzada > button{
+    width: 95%;
+    height: 40px;
+}
+
+
+/*#####################################################################################################################################################################*/
+/*#####################################################################################################################################################################*/
+
+/* ADAPTABILIDAD */
+@media (width<850px){
+    body{
+        grid-template-rows: 120px 110px 1fr;
+        grid-template-areas: "encabezado encabezado encabezado"
+                             "busqueda   busqueda   busqueda"
+                             "contenido   contenido  contenido";
+    }
+    header{
+        height: fit-content;
+        flex-flow: column nowrap;
+        align-items: center ;    
+        grid-area: encabezado;
+        
+    }
+}
+
+@media (width > 1000px){
+    main {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}
+
+
+/*#####################################################################################################################################################################*/
+/*#####################################################################################################################################################################*/
+
+/* ANIMACION */
+
