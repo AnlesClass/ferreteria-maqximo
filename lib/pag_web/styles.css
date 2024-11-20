@@ -7,14 +7,14 @@ header,main,aside{
 }
 
 body{
-    background-color: rgba(102, 102, 102, 0.352);
+    background-color: #f6cb6efc;
     min-height: 100vh;
     padding: 10px;
     gap: 10px;
     margin: 0;
     display: grid;
     grid-template-columns:240px 1fr 1fr;
-    grid-template-rows: 80px 150px 1fr 1fr;
+    grid-template-rows: 80px 250px 1fr 1fr;
     grid-template-areas: "encabezado encabezado encabezado"
                          "anuncio    anuncio    anuncio"
                          "busqueda   contenido  contenido"
@@ -65,12 +65,15 @@ header{
             scale: 0.95;
             background-color: rgba(207, 207, 88, 0.547);
         }
+        input{
+            background-color: #ffcb78;
+        }
 
 
 /* ANUNCIOS */
 section {
     grid-area: anuncio;
-    background-color: rgb(175, 171, 50);
+    background-color:  #F6A019;
     position: relative;
     overflow: hidden;
 }
@@ -92,76 +95,66 @@ li {
 }
 
 li > img {
-    object-fit: fill;
+    object-fit: cover;
 }
 
 ul:hover {
     animation-play-state: paused;
 }
 
-@keyframes deslizar {
-    0% {
-        transform: translateX(0); /* Comienza desde la posición inicial */
-    }
-    100% {
-        transform: translateX(-50%); /* Mueve la mitad del contenido duplicado */
-    }
-}
-
-
 /* CONTENIDO (productos) */
 
 main{
-    background-color: rgba(255 255 255 / 0.781);
+    background-color: inherit;
     grid-area: contenido;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 10px;
 }
 
-    .product-card{
-        background-color: #ebe6da;
-        display: grid;
-        grid-template-rows: 200px 30px 200px 30px;
-        flex-flow: column;
-        font-family: 'Lato';
-        padding: 10px;
-        height: max-content;
-        transition-duration: 200ms;
-        box-sizing: content-box;
-    }
-        img{
-            border-radius: 5px;
-            width: 100%;
-            height: 100%;
-            flex-grow: 1;
-            object-fit: cover;
-        }
-        .product-titulo{
-            text-align: center;
-            font-weight: bold;
-        }
-        .product-descripcion{
-            text-align: center;
-            height: 70px;
-        }
+.product-card{
+    background-color: #f6a119a8;
+    display: grid;
+    grid-template-rows: 200px 30px 200px 30px;
+    flex-flow: column;
+    font-family: 'Lato';
+    padding: 10px;
+    height: max-content;
+    transition-duration: 200ms;
+    box-sizing: content-box;
+}
+img{
+    border-radius: 5px;
+    width: 100%;
+    height: 100%;
+    flex-grow: 1;
+    object-fit: cover;
+}
+.product-titulo{
+    text-align: center;
+    font-weight: bold;
+}
+.product-descripcion{
+    text-align: center;
+    height: 70px;
+}
 
-        .product-precio-cantidad{
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-        }
+.product-precio-cantidad{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
 
-        .product-card:hover{
-            scale: 1.05;
-            background-color: rgb(215, 207, 188);
-            outline: 1px solid rgb(133, 128, 118);
-            border-radius: 9px;
-        }
+.product-card:hover{
+    scale: 1.05;
+    background-color: rgb(215, 207, 188);
+    outline: 1px solid rgb(133, 128, 118);
+    border-radius: 9px;
+}
 
 
 
-/* Barra de busqueda */
+/* BARRA DE BUSQUEDA */
 aside{
     background-color: #F6A019;
     grid-area: busqueda;
@@ -175,20 +168,44 @@ aside{
     gap: 25px;
 }
 
-#busquedaAvanzada > label {
-    text-align: start;
-    font-size: 20px  ;
-}
+    #busquedaAvanzada > label {
+        text-align: start;
+        font-size: 20px  ;
+    }
 
-#busquedaAvanzada > input{
-    width: 95%;
-    height: 20px;
-}
+    #busquedaAvanzada > select{
+        border: 0;
+        background-color: #ffd490;
+        height: 25px;
+    }
 
-#busquedaAvanzada > button{
-    width: 95%;
-    height: 40px;
-}
+    #busquedaAvanzada > input{
+        width: 100%;
+    }
+
+    #formatoResultadoPrecio{
+        display: flex;
+        flex-flow: row wrap;
+        align-items: center;
+        justify-content: space-around;
+    }
+        #formatoResultadoPrecio > p{
+            font-size: 20px;
+            font-weight: bold;
+        }
+        #formatoResultadoPrecio > input{
+            background-color: #ffd490;
+            flex-grow: 0;
+            width: 100px;
+            text-align: center;
+            font-size: 17px;
+            border-radius: 5px;
+        }
+    
+    #busquedaAvanzada > button{
+        width: 100%;
+        height: 40px;
+    }
 
 
 /*#####################################################################################################################################################################*/
@@ -199,8 +216,8 @@ aside{
     body{
         grid-template-rows: 120px 110px 1fr;
         grid-template-areas: "encabezado encabezado encabezado"
-                             "busqueda   busqueda   busqueda"
-                             "contenido   contenido  contenido";
+        "busqueda   busqueda   busqueda"
+        "contenido   contenido  contenido";
     }
     header{
         height: fit-content;
@@ -223,3 +240,11 @@ aside{
 
 /* ANIMACION */
 
+@keyframes deslizar {
+    0% {
+        transform: translateX(0); /* Comienza desde la posición inicial */
+    }
+    100% {
+        transform: translateX(-50%); /* Mueve la mitad del contenido duplicado */
+    }
+}

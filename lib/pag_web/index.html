@@ -4,26 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <script src='main.js'></script>  
     <title>Maqximo</title>
-
+    
 </head>
 <body>
     <!-- #ENCABEZADO -->
     <header>
-        <img src="/imagenes/LOGO.png.jpg">
+        <img src="imagenes/LOGO.png.jpg">
         <form id="busquedaFormulario" action="#" method="get">
             <label for="buscar">Buscar producto:</label>
             <input 
-                type="text" 
-                id="buscar" 
-                name="buscar" 
-                placeholder="Escribe el nombre del producto" 
+            type="text" 
+            id="buscar" 
+            name="buscar" 
+            placeholder="Escribe el nombre del producto"
+            value="" 
             />
             <button type="submit">Buscar</button>
         </form>
     </header>
-
+    
     <!-- ANUNCIOS -->
     <section>
         <ul>
@@ -42,8 +42,8 @@
             <li><img src="imagenes/P6.jpg"></li>      
         </ul>
     </section>
-
-
+    
+    
     <!-- #BARRA DE BUSQUEDA EN ESPECIFICO -->
     <aside>
         <form id="busquedaAvanzada">
@@ -51,47 +51,38 @@
             <!-- busqueda por Sede -->
             <label for="busquedaSede">Sede</label>
             <select id="busquedaSede">
-                <option>Sede 1</option>
-                <option>Sede 2</option>
             </select>
             <!-- busqueda por categoria -->
             <label for="busquedaCategoria">Categoria</label>
             <select id="busquedaCategoria">
-                <option>Categoria 1</option>
-                <option>Categoria 2</option>
-                <option>Categoria 3</option>
             </select>
             <!-- busqueda por precio -->
             <label for="busquedaPrecio">Precio</label> 
-            <input type="range" id="busquedaPrecio">
+            <input type="range" id="busquedaPrecio" max="500" min="1" step="5" value="250"
+            oninput="document.getElementById('resultadoPrecio').value =value">
+            <div id = formatoResultadoPrecio>
+                <p>S/</p> 
+                <input id="resultadoPrecio" type="number" value=250>
+            </div>
             <button type="submit">Buscar</button>
         </form>
     </aside>
     
     <!-- #CONTENIDO DE OBJETOS -->
-    <main>
-        <!--PLANTILLA. Para crear tarjetas de productos.-->
-            <template>
-                <div class="product-card">
-                    <img src="test01.png">
-                    <p class="product-titulo"> Nombre Producto </p>
-                    <p class="product-descripcion"> Descripcion del producto, por lo general las descripciones son largas asi que intentaré hacer mi mejor esfuerzo aquí para que se vea extenso.</p>
-                    <div class="product-precio-cantidad">
-                        <p class="product-precio"> S/.56.00 </p>
-                        <p class="product-cantidad"> 200 Units. </p>
-                    </div>
-                </div>
-            </template>
-            <!--TARJETA. De prueba de producto-->
-            <div class="product-card">
-                <img src="test02.png">
-                <p class="product-titulo"> Nombre Producto </p>
-                <p class="product-descripcion"> Descripcion del producto, por lo general las descripciones son largas asi que intentaré hacer mi mejor esfuerzo aquí para que se vea extenso.</p>
-                <div class="product-precio-cantidad">
-                    <p class="product-precio"> S/.56.00 </p>
-                    <p class="product-cantidad"> 200 Units. </p>
-                </div>
+<main>
+    <!--PLANTILLA. Para crear tarjetas de productos.-->
+    <template>
+        <div class="product-card">
+            <img src="test01.png">
+            <p class="product-titulo"> Nombre Producto </p>
+            <p class="product-descripcion"> Descripcion del producto, por lo general las descripciones son largas asi que intentaré hacer mi mejor esfuerzo aquí para que se vea extenso.</p>
+            <div class="product-precio-cantidad">
+                <p class="product-precio"> S/.56.00 </p>
+                <p class="product-cantidad"> 200 Units. </p>
             </div>
-    </main>
+        </div>
+    </template>
+    <script src='main.js'></script>  
+</main>
 </body>
-</html>
+    </html>
