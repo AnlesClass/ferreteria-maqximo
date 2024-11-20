@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:convert';
 
 Producto productoFromJson(String str) => Producto.fromJson(jsonDecode(str));
@@ -8,7 +10,7 @@ class Producto {
   final int idCategoria;
   final String nombre;
   final String descripcion;
-  final String path_imagen;
+  String? path_imagen;
 
   Producto({
     this.idProducto,

@@ -1,18 +1,9 @@
-import 'dart:math';
-
-import 'package:app_ferreteria/screens/login_screen.dart';
-import 'package:app_ferreteria/screens/register_screen.dart';
-import 'package:app_ferreteria/services/categoria_service.dart';
-import 'package:app_ferreteria/services/product_service.dart';
-import 'package:app_ferreteria/services/user_service.dart';
-import 'package:app_ferreteria/themes/classic_theme.dart';
-import 'package:app_ferreteria/view_models/add_product_view_model.dart';
-import 'package:app_ferreteria/view_models/login_view_model.dart';
-import 'package:app_ferreteria/view_models/read_existence_view_model.dart';
-import 'package:app_ferreteria/view_models/register_view_model.dart';
-import 'package:flutter/material.dart';
-
 import 'package:app_ferreteria/screens/screens.dart';
+import 'package:app_ferreteria/services/services.dart';
+import 'package:app_ferreteria/themes/classic_theme.dart';
+import 'package:app_ferreteria/view_models/view_models.dart';
+
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -20,9 +11,9 @@ void main() {
     // llamada a los provider para gestionar estados y mejorar la validaciones
     MultiProvider(
       providers: [
-        Provider(create: (_) => UserService("http://localhost:3000")),
-        Provider(create: (_) => CategoriaService(baseUrl: "http://localhost:3000")),
-        Provider(create: (_) => ProductService(baseURL: "http://localhost:3000")),
+        Provider(create: (_) => UserService("http://192.168.18.133:3000")),
+        Provider(create: (_) => CategoriaService(baseUrl: "http://192.168.18.133:3000")),
+        Provider(create: (_) => ProductService(baseURL: "http://192.168.18.133:3000")),
         ChangeNotifierProvider(
           create: (context) => RegisterViewModel(context.read<UserService>())),
         ChangeNotifierProvider(

@@ -8,6 +8,7 @@ import '../models/producto.dart';
 
 class AddProductViewModel extends FormViewModelBase{
 
+  File? imageProduct;
   final CategoriaService _categoriaService;
   final ProductService _productService;
   final TextEditingController nombreProducto = TextEditingController();
@@ -27,7 +28,7 @@ class AddProductViewModel extends FormViewModelBase{
     List<DropdownMenuItem<String>> items = [];
 
     //ITERAR para agregar <DropdownMenuItem<String>> al Array.
-    data.forEach((categoria) {
+    for (var categoria in data) {
       items.add(
         DropdownMenuItem(
           value: categoria['IDCATEGORIA'].toString(),
@@ -36,7 +37,7 @@ class AddProductViewModel extends FormViewModelBase{
             child: Text(categoria['NOMBRE']),
           ),
         ));
-    });
+    }
 
     //ACTUALIZAR nuestras opciones.
     categoriasOptions = items;
@@ -49,10 +50,26 @@ class AddProductViewModel extends FormViewModelBase{
     notifyListeners();
   }
 
+  //ACTUALIZAR imagen.
+  void setImage(File? image) {
+    imageProduct = image;
+    notifyListeners();
+  }
+
   //SUBIR producto al servidor.
   bool uploadProduct(Producto product, File imagen){
-    _productService.addProduct(product);
-    //_productService.addImage(imagen);
-    return false;
+    try {
+      // AGREGAR imagen a la Base de Datos y CAPTURAR nombre para la ruta del producto.
+      _productService.uploadImage(imagen).then((value){
+        product.path_imagen = 'images/$value';
+
+        // SUBIR producto a la Base de Datos.
+        _productService.addProduct(product);
+      });
+    } catch (e) {
+      print("DEBUG: $e");
+      return false;
+    }
+    return true;
   }
 }

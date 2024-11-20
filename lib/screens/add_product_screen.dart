@@ -9,20 +9,29 @@ import 'package:app_ferreteria/widgets/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class AddProductScreen extends StatelessWidget {
-
-  File? imageProduct;
-
   AddProductScreen({super.key});
 
   //SELECCIONAR imagen de galería y guardarlo en una variable (File)
-  Future<void> pickImage() async {
+  Future<void> pickImage(BuildContext context) async {
     final picker = ImagePicker();
     final pickedImage = await picker.pickImage(source: ImageSource.gallery);
 
     if (pickedImage != null) {
-      imageProduct = File(pickedImage.path);
+      Provider.of<AddProductViewModel>(context, listen: false).setImage(File(pickedImage.path));
     }
+  }
+  
+  //LIMPIAR los campos del Formulario.
+  void clearFields(BuildContext context){
+    //REFERENCIAR provider.
+    var campos = Provider.of<AddProductViewModel>(context, listen: false);
+    //LIMPIAR campos.
+    campos.nombreProducto.text = "";
+    campos.categoriaInitValue = '1';
+    campos.descripcionProducto.text = "";
+    campos.setImage(null);
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -114,15 +123,14 @@ class AddProductScreen extends StatelessWidget {
                               children: [
                                 TextButton(
                                   style: const ButtonStyle(
-                                    // El Overlay pinta cuando posiciono el mouse sobre esto.
                                     overlayColor: WidgetStatePropertyAll(Colors.transparent)
                                   ),
-                                  onPressed: () => pickImage(),
+                                  onPressed: () => pickImage(context),
                                   child: Padding(
                                     padding: const EdgeInsets.all(20),
                                     child: Image.asset(
-                                    "assets/images/placeholder_subir_imagen.png",
-                                    width: 100,
+                                      addProductViewmodel.imageProduct == null ? "assets/images/placeholder_subir_imagen.png" : "assets/images/placeholder_imagen_subida.png",
+                                      width: 100,
                                     ),
                                   )
                                 ),
@@ -189,35 +197,43 @@ class AddProductScreen extends StatelessWidget {
                                 height: 10,
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: [
                                   FilledButton(
                                     child: const Text("Guardar"),
                                     onPressed: () {
-                                      if (_formKey.currentState!.validate() && imageProduct != null){
-                                        //OBTENER extensión del archivo.
-                                        String extension = imageProduct!.path.split('.').last;
-                                        //CREAR producto.
-                                        Producto producto = Producto(
-                                          idCategoria: int.parse(addProductViewmodel.categoriaInitValue),
-                                          nombre: addProductViewmodel.nombreProducto.text,
-                                          descripcion: addProductViewmodel.descripcionProducto.text,
-                                          //TODO: La linea de abajo funciona en móvil, la otra '.png' es para pruebas en web.
-                                          //path_imagen: 'images/${addProductViewmodel.nombreProducto.text}.${extension}'
-                                          path_imagen: 'images/${addProductViewmodel.nombreProducto.text}.png'
-                                        );
-                                        print("DEBUG: ${producto.path_imagen}");
-                                        //TODO: Función para subir archivo al servidor con el nombre asignado (nombre del producto).
-                                        //addProductViewmodel.uploadProduct(producto, imageProduct);
+                                      // RETORNAR si el formulario es inválido.
+                                      if (!_formKey.currentState!.validate()) return;
+                                      // RETORNAR si no se ha subido imagen alguna. (+mensaje)
+                                      if (addProductViewmodel.imageProduct == null) {
+                                        ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(content: Text("No se ha seleccionado imagen.")));
+                                        return;
                                       }
+
+                                      // CREAR producto.
+                                      Producto producto = Producto(
+                                        idCategoria: int.parse(addProductViewmodel.categoriaInitValue),
+                                        nombre: addProductViewmodel.nombreProducto.text,
+                                        descripcion: addProductViewmodel.descripcionProducto.text,
+                                        path_imagen: null
+                                      );
+                                      
+                                      // REGISTRAR Imagen + Producto.
+                                      if (addProductViewmodel.uploadProduct(producto, addProductViewmodel.imageProduct!)){
+                                        ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(content: Text("Producto Agregado Exitosamente.")));
+                                        clearFields(context);
+                                      }                                      
                                     },
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
                                   ),
                                   FilledButton(
                                     child: const Text("Cancelar"),
                                     onPressed: () => {}
+                                  ),
+                                  IconButton.filled(
+                                    onPressed: () => clearFields(context),
+                                    icon: const Icon(Icons.cleaning_services_rounded)
                                   )
                                 ],
                               ),
