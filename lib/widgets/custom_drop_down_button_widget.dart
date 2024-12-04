@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 
 class CustomDropDownButton extends StatefulWidget {
   final List<DropdownMenuItem<dynamic>>? itemsList;
-  final String? initValue;
+  final dynamic initValue;
   final Color? backgroundColor;
   final Color? borderColor;
   final double? sizeBorder;
   final void Function(dynamic)? onChange;
+  final IconData? iconData;
 
   const CustomDropDownButton({
     super.key,
@@ -15,7 +16,8 @@ class CustomDropDownButton extends StatefulWidget {
     this.backgroundColor,
     this.borderColor,
     this.sizeBorder,
-    this.onChange
+    this.onChange,
+    this.iconData
   });
 
   @override
@@ -40,6 +42,7 @@ class _CustomDropDownButtonState extends State<CustomDropDownButton> {
         borderRadius: const BorderRadius.all(Radius.circular(5)),
         elevation: 2,
         isExpanded: true,
+        icon: (widget.iconData != null) ? Padding(padding: const EdgeInsets.symmetric(horizontal: 12.5), child: Icon(widget.iconData)) : null,
         underline: const SizedBox(), //BORRANDO: La (molesta) línea bajo el desplegable.
         value: widget.initValue,
         items: widget.itemsList,

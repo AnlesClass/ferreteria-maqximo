@@ -31,7 +31,7 @@ class _ReadExistenceScreenState extends State<ReadExistenceScreen> {
   List<dynamic> existences = [];
 
   Future<void> getExistences(int idSede) async {
-    final url = Uri.parse('http://localhost:3000/existencias/get/all?idSede=$idSede'); // CAMBIAR.
+    final url = Uri.parse('http://192.168.18.133:3000/existencias/get/all?idSede=$idSede'); // CAMBIAR.
 
     try {
       final response = await http.get(url);

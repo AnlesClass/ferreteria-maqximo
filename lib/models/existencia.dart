@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 
 Existencia existenciaFromJson(String str) => Existencia.fromJson(jsonDecode(str));
 String existenciaToJson(Existencia data) => jsonEncode(data.toJson());
@@ -9,8 +8,8 @@ class Existencia {
   final int idProducto;
   final int idSede;
   final int cantidad;
-  final Float precio;
-  final DateTime fecha_registro;
+  final double precio;
+  final String fecha_registro;
 
   Existencia({
     this.idExistencia,

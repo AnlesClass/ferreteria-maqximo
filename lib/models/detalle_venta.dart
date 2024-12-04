@@ -1,13 +1,9 @@
-import 'dart:ffi';
-
-
-
 class DetalleVenta {
   int? idDetalleVenta;
   final int idExistencia;
   final int idVenta;
   final int cantidadVenta;
-  final Float precioVenta;
+  final double precioVenta;
 
   DetalleVenta({
     this.idDetalleVenta,

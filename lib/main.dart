@@ -2,7 +2,6 @@ import 'package:app_ferreteria/screens/screens.dart';
 import 'package:app_ferreteria/services/services.dart';
 import 'package:app_ferreteria/themes/classic_theme.dart';
 import 'package:app_ferreteria/view_models/view_models.dart';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,8 +11,10 @@ void main() {
     MultiProvider(
       providers: [
         Provider(create: (_) => UserService("http://192.168.18.133:3000")),
+        Provider(create: (_) => ExistenciaService(baseURL: "http://192.168.18.133:3000")),
         Provider(create: (_) => CategoriaService(baseUrl: "http://192.168.18.133:3000")),
         Provider(create: (_) => ProductService(baseURL: "http://192.168.18.133:3000")),
+        Provider(create: (_) => SedeService(baseURL: "http://192.168.18.133:3000")),
         ChangeNotifierProvider(
           create: (context) => RegisterViewModel(context.read<UserService>())),
         ChangeNotifierProvider(
@@ -21,7 +22,9 @@ void main() {
         ChangeNotifierProvider(
           create: (context) => ReadExistenceViewModel()),
         ChangeNotifierProvider(
-          create: (context) => AddProductViewModel(context.read<CategoriaService>(), context.read<ProductService>()))
+          create: (context) => AddProductViewModel(context.read<CategoriaService>(), context.read<ProductService>())),
+        ChangeNotifierProvider(
+          create: (context) => AddExistenceViewModel(context.read<ProductService>(), context.read<SedeService>(), context.read<ExistenciaService>()))
       ],
       child: const MyApp(),
     ),
@@ -38,7 +41,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Ferretería Maqximo',
       theme: ClassicTheme.appTheme,
-      home: AddProductScreen()
+      home: AddExistenceScreen()
     );
   }
 }

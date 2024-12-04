@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 
 Venta ventaFromJson(String str) => Venta.fromJson(jsonDecode(str));
 String ventaToJson(Venta data) => jsonEncode(data.toJson());
@@ -7,7 +6,7 @@ String ventaToJson(Venta data) => jsonEncode(data.toJson());
 class Venta {
   int? idVenta;
   final int idCliente;
-  final Float importeTotal;
+  final double importeTotal;
   final DateTime fecha;
 
   Venta({
