@@ -91,23 +91,51 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      // Boton de Iniciar Sesion
-                      CustomButtonWidget(
-                        contenido: const Text("Iniciar Sesion"),
-                        onPressed: () async {
-                          // Valida el formulario antes de hacer login
-                          if (_formKey.currentState!.validate()) {
-                            final success = await loginViewmodel.login();
-                            final message = success
-                                ? "Inicio de sesión exitoso"
-                                : "Usuario o contraseña incorrectos";
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(SnackBar(content: Text(message)));
-                          }
-                        },
-                        backgroundColor: ClassicTheme.primary,
-                        foregroundColor: Colors.black,
-                        borderColor: const Color.fromARGB(35, 255, 255, 255),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: 200,
+                            // Boton de Iniciar Sesion
+                            child: CustomButtonWidget(
+                              contenido: const Text("Iniciar Sesion"),
+                              onPressed: () async {
+                                if (_formKey.currentState!.validate()) {
+                                  // Valida el formulario antes de hacer login
+                                  final success = await loginViewmodel.login();
+                                  final message = success
+                                      ? "Inicio de sesión exitoso"
+                                      : "Usuario o contraseña incorrectos";
+                                  if (message == 'Inicio de sesión exitoso') {
+                                    Navigator.pushNamed(
+                                        context, '/add_product');
+                                  }
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text(message)));
+                                }
+                              },
+                              backgroundColor: ClassicTheme.primary,
+                              foregroundColor: Colors.black,
+                              borderColor:
+                                  const Color.fromARGB(35, 255, 255, 255),
+                            ),
+                          ),
+                          const SizedBox(width: 4),
+                          SizedBox(
+                            width: 200,
+                            child: CustomButtonWidget(
+                              contenido: const Text("Registrar"),
+                              onPressed: () {
+                                //ir a la pantalla register
+                                Navigator.pushNamed(context, '/register');
+                              },
+                              backgroundColor: ClassicTheme.primary,
+                              foregroundColor: Colors.black,
+                              borderColor:
+                                  const Color.fromARGB(35, 255, 255, 255),
+                            ),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 15),
                       const EtiquetaMaqximo()
