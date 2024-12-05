@@ -16,6 +16,7 @@ class AddExistenceScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final addExistenceViewModel = Provider.of<AddExistenceViewModel>(context);
+    final loginData = Provider.of<LoginDataService>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -27,7 +28,7 @@ class AddExistenceScreen extends StatelessWidget {
           child: Form(
             child: Column(
               children: [
-                //SUBTITULO
+                // ----- SUBTITULO -----
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 15.0),
                   child: Row(
@@ -42,7 +43,7 @@ class AddExistenceScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                //BARRA BÚSQUEDA
+                // ----- BARRA BÚSQUEDA -----
                 CustomTextField(
                   controller: addExistenceViewModel.nombreProductoController,
                   keyboardType: TextInputType.text,
@@ -55,7 +56,7 @@ class AddExistenceScreen extends StatelessWidget {
                     },);
                   },
                 ),
-                //PRODUCTOS
+                // ----- PRODUCTOS -----
                 Container(
                   decoration: BoxDecoration(
                     border: Border.all(strokeAlign: 1.0, color: Colors.blueGrey)
@@ -77,7 +78,7 @@ class AddExistenceScreen extends StatelessWidget {
                                 //ACTUALIZAR el identificador del producto
                                 addExistenceViewModel.updateIdProduct(addExistenceViewModel.productosNombres[index]);
                                 //CONSULTAR información del producto en la base de datos. - Nombre del Producto, Sede en la que estamos (Default: 1)
-                                addExistenceViewModel.readProduct(addExistenceViewModel.productosNombres[index], 1);
+                                addExistenceViewModel.readProduct(addExistenceViewModel.productosNombres[index], addExistenceViewModel.selectedSede);
                               },
                               child: const Icon(Icons.add_rounded)
                             )
@@ -87,17 +88,17 @@ class AddExistenceScreen extends StatelessWidget {
                     },
                   )
                 ),
-                //PRODUCTO SELECCIONADO
+                // ----- PRODUCTO SELECCIONADO -----
                 Text(
                   (addExistenceViewModel.productSelected == "") 
                   ? "Sin Producto Seleccionado"
                   : "Producto Seleccionado: ${addExistenceViewModel.productSelected}"
                 ),
-                //SEDE(s)
+                // ----- SEDE(s) -----
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.5),
                   child: CustomDropDownButton(
-                    initValue: addExistenceViewModel.initialSede,
+                    initValue: addExistenceViewModel.selectedSede,
                     itemsList: addExistenceViewModel.sedesNombres.map((infoSede) {
                       return DropdownMenuItem(
                         value: infoSede[0], // ID de la Sede

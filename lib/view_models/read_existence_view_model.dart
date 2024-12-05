@@ -8,12 +8,13 @@ class ReadExistenceViewModel extends ChangeNotifier {
   final ExistenciaService _existenciaService;
 
   ReadExistenceViewModel(this._existenciaService){
-    getExistences(1);
+    // TODO: RELLENO GENÉRICO
+    getExistences(1, "");
   }
 
-  Future<void> getExistences(int idSede) async {
+  Future<void> getExistences(int idSede, String nombreProducton) async {
     try {
-      final response = await _existenciaService.getAllExistences(idSede);
+      final response = await _existenciaService.getAllExistences(idSede, nombreProducton);
       
       if (response.isEmpty) existences = [];
 
@@ -25,4 +26,6 @@ class ReadExistenceViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  
 }

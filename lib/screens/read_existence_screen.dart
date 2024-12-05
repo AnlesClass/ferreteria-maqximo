@@ -1,28 +1,21 @@
-import 'package:app_ferreteria/view_models/read_existence_view_model.dart';
 import 'package:flutter/material.dart';
 
-import 'package:app_ferreteria/widgets/widgets.dart';
+import '../view_models/view_models.dart';
+import '../widgets/widgets.dart';
+import '../services/services.dart';
+
 import 'package:provider/provider.dart';
 
 class ReadExistenceScreen extends StatelessWidget {
 
   const ReadExistenceScreen({super.key});
 
-  static Map<int, dynamic> categorias ={
-    0 : {
-      "value" : "Value01",
-      "message" : "Por Precio"
-    },
-    1 : {
-      "value" : "Value02",
-      "message" : "Por Stock"
-    }
-  };
-
   @override
   Widget build(BuildContext context) {
 
+    final debouncer = Debouncer(miliseconds: 1500);
     final readExistenceViewmodel = Provider.of<ReadExistenceViewModel>(context);
+    final loginData = Provider.of<LoginDataService>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -40,7 +33,7 @@ class ReadExistenceScreen extends StatelessWidget {
             child: Column(
               children: [
                 const Text(
-                  "Tipo de Filtrado",
+                  "Filtrado de Existencias",
                   style: TextStyle(
                     fontSize: 16.5,
                     fontWeight: FontWeight.w500,
@@ -48,42 +41,19 @@ class ReadExistenceScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(
-                  height: 10,
-                ),
-                CustomDropDownButton(
-                  initValue: "Value01",
-                  itemsList: [
-                    // TODO: Documentar con exactitud esto.
-                    ...categorias.entries.map(
-                      (e) {
-                        return DropdownMenuItem<String>(
-                          value: e.value["value"], // Value01  
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: Row(
-                              children: [
-                                // 1. Icono de la Fila.
-                                // iconData != null ? Icon(iconData) : const Icon(null),
-                                // 2. Sepración entre Widgets.
-                                const SizedBox(width: 10),
-                                // 3. Mensajge de la Fila.
-                                Text(e.value["message"]),
-                                ],
-                              ),
-                          ),
-                        );
-                      }
-                    ),
-                  ]
-                ),
-                const SizedBox(
                   height: 15,
                 ),
+                // ----- FILTRAR POR NOMBRE -----
                 CustomTextField(
                   controller: readExistenceViewmodel.nombreExistencia,
                   hintText: "Buscar la Existencia...",
                   labelText: "Búsqueda",
                   icon: Icons.manage_search_rounded,
+                  onChanged: (value) {
+                    debouncer.execute(() {
+                      readExistenceViewmodel.getExistences(loginData.idSede, value);
+                    });
+                  },
                 ),
                 const SizedBox(
                   height: 10,

@@ -1,5 +1,4 @@
 import 'package:app_ferreteria/rutas.dart';
-import 'package:app_ferreteria/screens/screens.dart';
 import 'package:app_ferreteria/services/cargos_service.dart';
 import 'package:app_ferreteria/services/services.dart';
 import 'package:app_ferreteria/themes/themes.dart';
@@ -23,11 +22,14 @@ void main() {
         Provider(create: (_) => SedeService(baseURL: IP)),
         Provider(create: (_) => CargosService(baseURL: IP)),
         ChangeNotifierProvider(
+          create: (context) => LoginDataService()),
+        ChangeNotifierProvider(
             create: (context) => RegisterViewModel(context.read<UserService>(),
                 context.read<SedeService>(), context.read<CargosService>())),
         ChangeNotifierProvider(
           create: (context) => LoginViewModel(
-            context.read<UserService>())),
+            context.read<UserService>(),
+            context.read<LoginDataService>())),
         ChangeNotifierProvider(
           create: (context) => ReadExistenceViewModel(
             context.read<ExistenciaService>())),
@@ -61,7 +63,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       // Se inicia la ruta principal "/" que redirecciona a LoginScreen
-      initialRoute: '/read_existence',
+      initialRoute: '/',
       // Aqui se usa un mapa para establecer cada redireccion un Widget determinado
       routes: appRutas,
       title: 'Ferretería Maqximo',

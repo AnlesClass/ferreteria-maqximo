@@ -45,8 +45,8 @@ class ExistenciaService {
     }
   }
 
-  Future<List<dynamic>> getAllExistences(int idSede) async{
-    final url = Uri.parse('$baseURL/existencias/get/all?idSede=$idSede');
+  Future<List<dynamic>> getAllExistences(int idSede, String nombre) async{
+    final url = Uri.parse('$baseURL/existencias/get/all?idSede=$idSede&name=$nombre');
 
     try {
       final res = await http.get(url);

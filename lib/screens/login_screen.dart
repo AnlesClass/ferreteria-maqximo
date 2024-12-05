@@ -96,12 +96,12 @@ class LoginScreen extends StatelessWidget {
                         children: [
                           SizedBox(
                             width: 200,
-                            // Boton de Iniciar Sesion
+                            // ----- BOTON INICIO SESION -----
                             child: CustomButtonWidget(
                               contenido: const Text("Iniciar Sesion"),
                               onPressed: () async {
+                                // VALIDAR el formulario antes de hacer login
                                 if (_formKey.currentState!.validate()) {
-                                  // Valida el formulario antes de hacer login
                                   final success = await loginViewmodel.login();
                                   final message = success
                                     ? "Inicio de sesión exitoso"

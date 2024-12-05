@@ -9,7 +9,7 @@ class AddExistenceViewModel extends ChangeNotifier{
   final TextEditingController precioController = TextEditingController();
   List<String> productosNombres = [];
   List<dynamic> sedesNombres = [];
-  int initialSede = -1;
+  int selectedSede = -1;
   int idProducto = -1;
   String productSelected = "";
   final ExistenciaService _existenciaService;
@@ -25,7 +25,7 @@ class AddExistenceViewModel extends ChangeNotifier{
     if (validar()){
       Existencia existencia = Existencia(
         idProducto: idProducto, 
-        idSede: initialSede, 
+        idSede: selectedSede, 
         cantidad: int.parse(cantidadController.text), 
         precio: double.parse(precioController.text), 
         fecha_registro: DateTime.now().toString()
@@ -70,7 +70,7 @@ class AddExistenceViewModel extends ChangeNotifier{
     }
 
     //CONFIGURAR valor de sede inicial.
-    initialSede = sedesNombres[0][0];
+    selectedSede = sedesNombres[0][0];
 
     notifyListeners();
   }
@@ -110,7 +110,7 @@ class AddExistenceViewModel extends ChangeNotifier{
   }
   
   void setInitialSede(int initialSede){
-    this.initialSede = initialSede;
+    this.selectedSede = initialSede;
     notifyListeners();
   }
 
