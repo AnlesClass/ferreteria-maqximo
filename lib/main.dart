@@ -1,4 +1,5 @@
 import 'package:app_ferreteria/screens/operations_screen.dart';
+import 'package:app_ferreteria/rutas.dart';
 import 'package:app_ferreteria/screens/screens.dart';
 import 'package:app_ferreteria/services/services.dart';
 import 'package:app_ferreteria/themes/themes.dart';
@@ -7,6 +8,7 @@ import 'package:app_ferreteria/view_models/view_models.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
+export 'rutas.dart';
 
 void main() {
   // ignore: constant_identifier_names
@@ -21,11 +23,15 @@ void main() {
         Provider(create: (_) => ProductService(baseURL: IP)),
         Provider(create: (_) => SedeService(baseURL: IP)),
         ChangeNotifierProvider(
-          create: (context) => RegisterViewModel(context.read<UserService>())),
+            create: (context) =>
+                RegisterViewModel(context.read<UserService>())),
         ChangeNotifierProvider(
-          create: (context) => LoginViewModel(context.read<UserService>())),
+            create: (context) => LoginViewModel(context.read<UserService>())),
+        ChangeNotifierProvider(create: (context) => ReadExistenceViewModel()),
         ChangeNotifierProvider(
-          create: (context) => ReadExistenceViewModel()),
+            create: (context) => AddProductViewModel(
+                context.read<CategoriaService>(),
+                context.read<ProductService>())),
         ChangeNotifierProvider(
           create: (context) => AddProductViewModel(context.read<CategoriaService>(), context.read<ProductService>())),
         ChangeNotifierProvider(
@@ -46,9 +52,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      //se inicia la ruta principal "/" que redirecciona a LoginScreen
+      initialRoute: '/',
+      //aqui se usa un mapa para establecer cada redireccion un widget determinado
+      routes: appRutas,
       title: 'Ferretería Maqximo',
       theme: ClassicTheme.appTheme,
-      home: const OperationsScreen()
     );
   }
 }
