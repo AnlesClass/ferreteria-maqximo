@@ -1,5 +1,6 @@
 import 'package:app_ferreteria/rutas.dart';
 import 'package:app_ferreteria/screens/screens.dart';
+import 'package:app_ferreteria/services/cargos_service.dart';
 import 'package:app_ferreteria/services/services.dart';
 import 'package:app_ferreteria/themes/classic_theme.dart';
 import 'package:app_ferreteria/view_models/view_models.dart';
@@ -8,25 +9,20 @@ import 'package:provider/provider.dart';
 export 'rutas.dart';
 
 void main() {
+  const String IP = "http://localhost:3000";
   runApp(
     // llamada a los provider para gestionar estados y mejorar la validaciones
     MultiProvider(
       providers: [
-        Provider(create: (_) => UserService("http://192.168.18.133:3000")),
-        Provider(
-            create: (_) =>
-                ExistenciaService(baseURL: "http://192.168.18.133:3000")),
-        Provider(
-            create: (_) =>
-                CategoriaService(baseUrl: "http://192.168.18.133:3000")),
-        Provider(
-            create: (_) =>
-                ProductService(baseURL: "http://192.168.18.133:3000")),
-        Provider(
-            create: (_) => SedeService(baseURL: "http://192.168.18.133:3000")),
+        Provider(create: (_) => UserService(IP)),
+        Provider(create: (_) => ExistenciaService(baseURL: IP)),
+        Provider(create: (_) => CategoriaService(baseUrl: IP)),
+        Provider(create: (_) => ProductService(baseURL: IP)),
+        Provider(create: (_) => SedeService(baseURL: IP)),
+        Provider(create: (_) => CargosService(baseURL: IP)),
         ChangeNotifierProvider(
-            create: (context) =>
-                RegisterViewModel(context.read<UserService>())),
+            create: (context) => RegisterViewModel(context.read<UserService>(),
+                context.read<SedeService>(), context.read<CargosService>())),
         ChangeNotifierProvider(
             create: (context) => LoginViewModel(context.read<UserService>())),
         ChangeNotifierProvider(create: (context) => ReadExistenceViewModel()),
