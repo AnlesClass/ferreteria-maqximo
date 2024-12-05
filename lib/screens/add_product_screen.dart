@@ -61,7 +61,7 @@ class AddProductScreen extends StatelessWidget {
             Container(
               color: ClassicTheme.primary,
               width: double.maxFinite,
-              height: 200, // TODO: Corregir esto
+              height: 200,
               child: Image.asset("assets/images/logo_maqximo.jpeg"),
             ),
             // CONTENER: Formulario para Registro del Producto.
@@ -123,6 +123,7 @@ class AddProductScreen extends StatelessWidget {
                               children: [
                                 TextButton(
                                   style: const ButtonStyle(
+                                    backgroundColor: WidgetStatePropertyAll(Colors.transparent),
                                     overlayColor: WidgetStatePropertyAll(Colors.transparent)
                                   ),
                                   onPressed: () => pickImage(context),
