@@ -14,6 +14,11 @@ class OperationsViewModel extends ChangeNotifier{
       "WIDGET": AddExistenceScreen(),
       "NAME": "Existencias",
       "ICON": Icons.add_business_sharp
+    },
+    {
+      "WIDGET": const ReadExistenceScreen(),
+      "NAME": "Registros",
+      "ICON": Icons.receipt_long_outlined
     }
   ];
 

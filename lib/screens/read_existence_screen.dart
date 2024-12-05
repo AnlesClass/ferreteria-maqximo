@@ -1,59 +1,23 @@
-import 'dart:convert';
-
 import 'package:app_ferreteria/view_models/read_existence_view_model.dart';
 import 'package:flutter/material.dart';
 
 import 'package:app_ferreteria/widgets/widgets.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
-class ReadExistenceScreen extends StatefulWidget {
-   
+class ReadExistenceScreen extends StatelessWidget {
+
   const ReadExistenceScreen({super.key});
 
   static Map<int, dynamic> categorias ={
     0 : {
-      "value" : "Value01", // Consulta : Nombre Categoria.
-      "message" : "Por Precio" // Consulta : Nombre Categoria.
+      "value" : "Value01",
+      "message" : "Por Precio"
     },
     1 : {
       "value" : "Value02",
       "message" : "Por Stock"
     }
   };
-
-  @override
-  State<ReadExistenceScreen> createState() => _ReadExistenceScreenState();
-}
-
-class _ReadExistenceScreenState extends State<ReadExistenceScreen> {
-  
-  List<dynamic> existences = [];
-
-  Future<void> getExistences(int idSede) async {
-    final url = Uri.parse('http://192.168.18.133:3000/existencias/get/all?idSede=$idSede'); // CAMBIAR.
-
-    try {
-      final response = await http.get(url);
-      
-      // SI la solicitud sale bien.
-      if (response.statusCode == 200){
-        setState(() {
-          existences = jsonDecode(response.body);
-        });
-      }
-    } catch (e) {
-      //TODO: Salta un dialogo de error y devuelve a la anterior página.
-      existences = [];
-      print('Error al hacer la solicitud "getExistences" => $e');
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getExistences(1);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +54,7 @@ class _ReadExistenceScreenState extends State<ReadExistenceScreen> {
                   initValue: "Value01",
                   itemsList: [
                     // TODO: Documentar con exactitud esto.
-                    ...ReadExistenceScreen.categorias.entries.map(
+                    ...categorias.entries.map(
                       (e) {
                         return DropdownMenuItem<String>(
                           value: e.value["value"], // Value01  
@@ -130,9 +94,10 @@ class _ReadExistenceScreenState extends State<ReadExistenceScreen> {
               ],
             ),
           ),
+          // ----- VISUALIZAR EXISTENCIAS -----
           Expanded(
             child: ListView(
-              children: existences.map((existence){
+              children: readExistenceViewmodel.existences.map((existence){
                 return ListTile(
                   title: Text(existence["NOMBRE"]),
                   subtitle: Flex(

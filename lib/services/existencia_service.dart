@@ -44,4 +44,19 @@ class ExistenciaService {
       return [];
     }
   }
+
+  Future<List<dynamic>> getAllExistences(int idSede) async{
+    final url = Uri.parse('$baseURL/existencias/get/all?idSede=$idSede');
+
+    try {
+      final res = await http.get(url);
+      
+      if (res.statusCode == 404) return [];
+
+      return jsonDecode(res.body);
+    } catch (err) {
+      print("Error al listar las Existencias: $err");
+      return [];
+    }
+  }
 }

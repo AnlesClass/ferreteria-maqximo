@@ -104,11 +104,12 @@ class LoginScreen extends StatelessWidget {
                                   // Valida el formulario antes de hacer login
                                   final success = await loginViewmodel.login();
                                   final message = success
-                                      ? "Inicio de sesión exitoso"
-                                      : "Usuario o contraseña incorrectos";
+                                    ? "Inicio de sesión exitoso"
+                                    : "Usuario o contraseña incorrectos";
                                   if (message == 'Inicio de sesión exitoso') {
                                     Navigator.pushNamed(
-                                        context, '/add_product');
+                                      context, '/operations'
+                                    );
                                   }
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(content: Text(message)));
