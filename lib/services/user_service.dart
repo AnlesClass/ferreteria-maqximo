@@ -38,7 +38,7 @@ class UserService {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      if (data != null && data['idUsuario'] != null) {
+      if (data != null && data['IDUSUARIO'] != null) {
         return true; // Inicio de sesión exitoso
       }
     }

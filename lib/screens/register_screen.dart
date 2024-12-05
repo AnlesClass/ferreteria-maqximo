@@ -14,6 +14,12 @@ class RegisterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // Accede al ViewModel usando Provider
     final registerViewModel = Provider.of<RegisterViewModel>(context);
+    if (registerViewModel.sedeOptions.isEmpty) {
+      Future.microtask(() => registerViewModel.loadSedes());
+    }
+    if (registerViewModel.cargoOptions.isEmpty) {
+      Future.microtask(() => registerViewModel.loadCargos());
+    }
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(206, 255, 162, 0),
@@ -76,6 +82,7 @@ class RegisterScreen extends StatelessWidget {
                         itemsList: registerViewModel.cargoOptions,
                         onChange: (value) {
                           registerViewModel.selectedCargo = value.toString();
+                          registerViewModel.notifyListeners();
                         },
                       ),
                     ),
@@ -93,6 +100,7 @@ class RegisterScreen extends StatelessWidget {
                         itemsList: registerViewModel.sedeOptions,
                         onChange: (value) {
                           registerViewModel.selectedSede = value.toString();
+                          registerViewModel.notifyListeners();
                         },
                       ),
                     ),

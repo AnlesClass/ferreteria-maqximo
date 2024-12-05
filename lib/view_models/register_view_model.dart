@@ -1,17 +1,22 @@
 import 'package:app_ferreteria/models/user.dart';
+import 'package:app_ferreteria/services/cargos_service.dart';
 import 'package:app_ferreteria/services/user_service.dart';
 import 'package:app_ferreteria/view_models/form_view_model_base.dart';
 import 'package:flutter/material.dart';
+import 'package:app_ferreteria/services/sede_service.dart';
 
 class RegisterViewModel extends FormViewModelBase {
   final UserService _userService;
+  final SedeService _sedeService;
+  final CargosService _cargosService;
   String selectedCargo = "1";
   String selectedSede = "1";
   final TextEditingController nombreController = TextEditingController();
   final TextEditingController apellidoController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController contraseniaController = TextEditingController();
-  RegisterViewModel(this._userService);
+
+  RegisterViewModel(this._userService, this._sedeService, this._cargosService);
 
   Future<bool> registerUser() async {
     if (!validarCampos()) return false;
@@ -32,16 +37,33 @@ class RegisterViewModel extends FormViewModelBase {
         validarTexto(apellidoController.text, "apellido") == null;
   }
 
-// Definición de las opciones para los Cargos
-  final List<DropdownMenuItem<String>> cargoOptions = [
-    const DropdownMenuItem(value: "1", child: Text("Administrador")),
-    const DropdownMenuItem(value: "2", child: Text("Empleado")),
-  ];
+  List<DropdownMenuItem<String>> sedeOptions = [];
+  List<DropdownMenuItem<String>> cargoOptions = [];
 
-// Definición de las opciones para la Sede
-  final List<DropdownMenuItem<String>> sedeOptions = [
-    const DropdownMenuItem(value: "1", child: Text("Sede 1")),
-    const DropdownMenuItem(value: "2", child: Text("Sede 2")),
-    const DropdownMenuItem(value: "3", child: Text("Sede 3"))
-  ];
+  Future<void> loadCargos() async {
+    try {
+      final cargos = await _cargosService.getCargos();
+      cargoOptions = cargos.map<DropdownMenuItem<String>>((cargo) {
+        return DropdownMenuItem<String>(
+          value: cargo['IDCARGO'].toString(),
+          child: Text(cargo['NOMBRE']),
+        );
+      }).toList();
+      notifyListeners();
+    } catch (e) {}
+  }
+
+  // DropDownMenuItem de las sedes
+  Future<void> loadSedes() async {
+    try {
+      final sedes = await _sedeService.getSedes();
+      sedeOptions = sedes.map<DropdownMenuItem<String>>((sede) {
+        return DropdownMenuItem<String>(
+          value: sede['IDSEDE'].toString(),
+          child: Text(sede['NOMBRE']),
+        );
+      }).toList();
+      notifyListeners();
+    } catch (e) {}
+  }
 }
